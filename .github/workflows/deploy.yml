@@ -2,29 +2,33 @@ name: Deploy Vite App to GitHub Pages
 
 on:
   push:
-    branches: [main] # Se ejecuta al hacer push en main
-  workflow_dispatch: # Permite lanzarlo manualmente
+    branches: [main] # o la rama donde trabajas
+
+permissions:
+  contents: write # 👈 MUY IMPORTANTE
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
-          node-version: 20
+          persist-credentials: false # 👈 Necesario para usar el token manualmente
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build project
+      - name: Build
         run: npm run build
 
-      - name: Deploy to GitHub Pages 🚀
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          branch: gh-pages # Rama donde se publicará
-          folder: dist # Carpeta generada por vite build
+          github_token: ${{ secrets.GITHUB_TOKEN }} # 👈 Esto da acceso de escritura
+          publish_dir: ./dist
