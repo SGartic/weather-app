@@ -1,0 +1,75 @@
+📆 2. Pronóstico del tiempo
+Pronóstico por hora (hasta 48h)
+
+Pronóstico diario (hasta 7 días)
+
+Temperaturas (día/noche)
+
+Iconos y descripciones para cada día
+
+Cambios de humedad, viento, lluvia
+
+📦 Endpoint: One Call API o /forecast
+
+📍 3. Búsqueda por ciudad
+Input para buscar ciudad y obtener su clima
+
+Autocompletado básico con coincidencias
+
+También puedes buscar por coordenadas
+
+📦 Endpoint: /geo/1.0/direct y /geo/1.0/reverse
+
+🌫️ 4. Calidad del aire
+Índice de calidad del aire (AQI)
+
+Contaminantes:
+
+PM2.5
+
+PM10
+
+CO
+
+NO₂
+
+SO₂
+
+O₃
+
+📦 Endpoint: /air_pollution
+
+⏰ 5. Datos solares y lunares
+Hora de salida y puesta del sol
+
+Fase de la luna
+
+Hora de salida y puesta de la luna
+
+📦 Parte del One Call API
+
+⚠️ 6. Alertas meteorológicas
+Alertas activas por zona (si las hay)
+
+Fuente de la alerta
+
+Descripción del fenómeno (ej. tormenta)
+
+Hora de inicio y fin
+
+📦 Parte del One Call API (si hay alertas disponibles en la zona)
+
+🗺️ 7. Mapas meteorológicos (opcional)
+Superponer capas en un mapa interactivo:
+
+Nubes
+
+Temperatura
+
+Precipitaciones
+
+Presión
+
+Puedes usar Leaflet.js o Mapbox con las capas de OpenWeather
+
+📦 Endpoint: tile.openweathermap.org
