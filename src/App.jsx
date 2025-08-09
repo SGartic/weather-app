@@ -75,8 +75,8 @@ export default function App() {
   return directions[Math.round(deg / 45) % 8];
 };
 
-const getBackgroundByHour = (dt) => {
-  const localTime = new Date((dt) * 1000).getUTCHours();
+const getBackgroundByHour = (dt, timezone) => {
+  const localTime = new Date((dt + timezone) * 1000).getUTCHours();
 
   if (localTime >= 6 && localTime < 12) {
     // Mañana
@@ -91,6 +91,52 @@ const getBackgroundByHour = (dt) => {
     // Noche
     return "linear-gradient(135deg, #0F2027, #203A43, #2C5364)"; // azules oscuros
   }
+};
+
+const getSunrise = (time) => {
+  const offset = weather.timezone;
+
+  const localUnix = time + offset;
+  
+  // Crear fecha en UTC para esa ciudad
+  const date = new Date(localUnix * 1000);
+
+  // Obtener horas y minutos en UTC (sin tu offset)
+  const hours = date.getUTCHours().toString().padStart(2, "0");
+  const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+
+  return `${hours}:${minutes}`;
+
+};
+
+const getSunset = (time) => {
+  const offset = weather.timezone;
+
+  const localUnix = time + offset;
+  
+  // Crear fecha en UTC para esa ciudad
+  const date = new Date(localUnix * 1000);
+
+  // Obtener horas y minutos en UTC (sin tu offset)
+  const hours = date.getUTCHours().toString().padStart(2, "0");
+  const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+
+  return `${hours}:${minutes}`;
+};
+
+const getCurrentTime = (time) => {
+  const offset = weather.timezone;
+
+  const localUnix = time + offset;
+  
+  // Crear fecha en UTC para esa ciudad
+  const date = new Date(localUnix * 1000);
+
+  // Obtener horas y minutos en UTC (sin tu offset)
+  const hours = date.getUTCHours().toString().padStart(2, "0");
+  const minutes = date.getUTCMinutes().toString().padStart(2, "0");
+
+  return `${hours}:${minutes}`;
 };
   
   useEffect(() => {
@@ -111,6 +157,7 @@ const getBackgroundByHour = (dt) => {
     );
   }, []);
 
+  {/** Titulo en pagina **/}
   return (
   <div style={{ textAlign: "center", marginTop: "50px", fontFamily: "Arial, sans-serif" }}>
     <h1 style={{ marginBottom: "20px", color: "#b6f2f6ff" }}>🌤 Weather City</h1>
@@ -119,6 +166,7 @@ const getBackgroundByHour = (dt) => {
       onSubmit={getWeatherByCity}
       style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}
     >
+      {/** Input de ciudad **/}
       <input
         type="text"
         value={city}
@@ -132,6 +180,7 @@ const getBackgroundByHour = (dt) => {
           fontSize: "14px",
         }}
       />
+      {/** Boton de búsqueda **/}
       <button
         type="submit"
         style={{
@@ -160,6 +209,7 @@ const getBackgroundByHour = (dt) => {
           boxShadow: "0px 4px 12px rgba(0,0,0,0.1)",
         }}
       >
+        {/* Hora */}
         <h2
           style={{
             margin: "0",
@@ -170,16 +220,15 @@ const getBackgroundByHour = (dt) => {
             color: "#ccc",
           }}
         >
-          <span style={{ fontSize: "32px" }}>
-            {new Date((weather.dt) * 1000)
-              .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+          <span style={{ fontSize: "32px", color: "#fff" }}>
+            {getCurrentTime(weather.dt)}
           </span>
           <span style={{ fontSize: "30px", color: "#fff" }}>
             {weather.name}, {weather.sys.country}
           </span>
         </h2>
       
-
+          {/* Descripcion */}
         <div
           style={{
             display: "flex",
@@ -205,7 +254,7 @@ const getBackgroundByHour = (dt) => {
           </span>
         </div>
 
-        
+        {/* Temperatura */}
         <p style={{ fontSize: "16px", margin: "4px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
           <WiThermometer size={20} />
           Current: <b>{weather.main.temp}°C</b> Real Feel: <b>{(weather.main.feels_like).toFixed(1)}°C</b>
@@ -224,9 +273,13 @@ const getBackgroundByHour = (dt) => {
 
         </p>
 
+        {/* Humedad */}
+
         <p style={{ margin: "4px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
           <WiHumidity size={20} /> Humidity: {weather.main.humidity}%
         </p>
+
+            {/* Viento */}
 
         <p style={{ margin: "4px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
           <WiStrongWind size={20} /> Wind:
@@ -236,29 +289,35 @@ const getBackgroundByHour = (dt) => {
           {getWindDirection(weather.wind.deg)} : {(weather.wind.speed * 3.6).toFixed(1)} km/h
         </p>
 
+            {/* Presion */}
+
         <p style={{ margin: "4px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
           <WiBarometer size={20} /> Pressure: {weather.main.pressure} hPa
         </p>
+
+        {/* Nubosidad */}
 
         <p style={{ margin: "4px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
           <WiCloud size={20} /> Cloudiness: {weather.clouds.all}%
         </p>
 
+        {/* Visibilidad */}
+
         <p style={{ margin: "4px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
           <WiDayFog size={20} /> Visibility: {(weather.visibility / 1000).toFixed(1)} km
         </p>
+
+        {/* Amanecer y atardecer (ABAJO)*/ }
         
         <p style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "16px", margin: "4px 0" }}>
           <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
             <FaSun color="orange" />
-            {new Date((weather.sys.sunrise) * 1000)
-              .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            {getSunrise(weather.sys.sunrise)}
           </span>
 
           <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
             <FaMoon color="goldenrod" />
-            {new Date((weather.sys.sunset) * 1000)
-              .toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            {getSunset(weather.sys.sunset)}
           </span>
         </p>
       </div>

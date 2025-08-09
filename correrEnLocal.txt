@@ -1,0 +1,3 @@
+cd desktop/code/weather-app #(o la ubicacion que sea)
+npm install   # (solo la primera vez o si cambian dependencias)
+npm run dev
