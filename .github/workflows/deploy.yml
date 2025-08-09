@@ -2,7 +2,10 @@ name: Deploy Vite app to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main] # deploya cuando haces push a main
+
+permissions:
+  contents: write # 👈 Permite hacer push a gh-pages
 
 jobs:
   build-and-deploy:
@@ -26,5 +29,5 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
-          folder: dist
+          branch: gh-pages # rama donde se publica
+          folder: dist # carpeta que se deploya
