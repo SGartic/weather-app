@@ -1,0 +1,2 @@
+https://open-meteo.com/en/docs
+https://openweathermap.org/current
