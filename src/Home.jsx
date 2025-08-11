@@ -3,18 +3,18 @@ import { useEffect, useState, useContext } from 'react';
 import { WiThermometer, WiHumidity, WiStrongWind, WiBarometer, WiCloud, WiDayFog } from "react-icons/wi";
 import { FaArrowDown, FaArrowUp, FaSun, FaMoon } from "react-icons/fa";
 import { CityContext } from "./CityContext";
-
+import { GeoapifyGeocoderAutocomplete, GeoapifyContext } from '@geoapify/react-geocoder-autocomplete';
+import '@geoapify/geocoder-autocomplete/styles/minimal.css';
 
 
 export default function Home() {
-  const {setCity, forecastData, currentWeatherData} = useContext(CityContext);
-  const [error, setError] = useState("");
+  const {setCity, forecastData, currentWeatherData, error, setError} = useContext(CityContext);
   const [searchValue, setSearchValue] = useState("");
+
   
   // 🔹 Estado para forzar re-render cada minuto
   const [tick, setTick] = useState(0);
 
-  
 
 
   const getWindDirection = (deg) => {
@@ -48,15 +48,15 @@ export default function Home() {
   const getCurrentTime = (time) => formatLocalTime(time);
 
     const handleSubmit = (e) => {
-    e.preventDefault();
-    if (searchValue.trim() !== "") {
-      setCity(searchValue); // actualiza el contexto solo aquí
-      setError(""); // limpia el error
-    }
-    else{
-      setError("Por favor ingresa una ciudad válida");
-    }
-  };
+      e.preventDefault();
+      if (searchValue.trim() !== "") {
+        setCity(searchValue); // actualiza el contexto solo aquí
+        setError(""); // limpia el error
+      }
+      else{
+        setError("Por favor ingresa una ciudad válida");
+      }
+    };
 
   const getTempColor = (temp) => {
     if (temp < 0) return "#8cc5ffff";
@@ -83,18 +83,21 @@ export default function Home() {
         onSubmit={handleSubmit}
         style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}
       >
-        <input
-          type="text"
-          value={searchValue}
-          onChange={(e) => setSearchValue(e.target.value)}
-          style={{
-            padding: "8px",
-            borderRadius: "6px",
-            border: "1px solid #ccc",
-            width: "200px",
-            fontSize: "14px",
-          }}
-        />
+        <div>
+          <input
+            type="text"
+            value={searchValue}
+            onChange={(e) => { setSearchValue(e.target.value) }}
+            style={{
+              padding: "8px",
+              borderRadius: "6px",
+              border: "1px solid #ccc",
+              width: "200px",
+              fontSize: "14px",
+            }}
+          />
+
+        </div>
         <button
           type="submit"
           style={{
@@ -180,7 +183,7 @@ export default function Home() {
               <b><FaArrowDown size={26} /> {forecastData?.min}°C</b>
             </span>
             <span style={{ display: "flex", alignItems: "center", gap: "4px", color: "#be0101ff" }}>
-              <FaArrowUp size={26} /> {forecastData?.max}°C
+              <b><FaArrowUp size={26} /> {forecastData?.max}°C</b>
             </span>
           </p>
 

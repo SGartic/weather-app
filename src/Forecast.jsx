@@ -1,11 +1,10 @@
 import React from "react";
-import { useEffect, useState } from 'react';
-import { useCity } from "./CityContext";
+import { useEffect, useState, useContext} from 'react';
+import { CityContext } from "./CityContext";
 
 export default function Forecast() {
-  const { city } = useCity();
+  const {setCity, forecastData, currentWeatherData} = useContext(CityContext);
 
-  const VITE_OPENWEATHER_API = import.meta.env.VITE_OPENWEATHER_API;
 
   
   return (
