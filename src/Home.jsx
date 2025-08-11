@@ -179,7 +179,7 @@ export default function Home() {
             <span style={{ display: "flex", alignItems: "center", gap: "4px", color: "#3a8dd0ff" }}>
               <b><FaArrowDown size={26} /> {forecastData?.min}°C</b>
             </span>
-            <span style={{ display: "flex", alignItems: "center", gap: "4px", color: "#f44b4bff" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: "4px", color: "#be0101ff" }}>
               <FaArrowUp size={26} /> {forecastData?.max}°C
             </span>
           </p>
